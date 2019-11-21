@@ -1,0 +1,342 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://scripts/field.gd" type="Script" id=1]
+[ext_resource path="res://textures/sheet2.png" type="Texture" id=2]
+[ext_resource path="res://fonts/CooperHewitt-MediumItalic.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/CooperHewitt-BoldItalic.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://textures/grid.png" type="Texture" id=5]
+[ext_resource path="res://textures/sheet1.png" type="Texture" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "hit"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/hit:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "turn_setup"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "miss"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/miss:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "reload"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "opponent_intro"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/pay_close_attention:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("timers/opponent_timer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ -1 ],
+"method": "start"
+} ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "player_intro"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/do_the_same:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "player_turn", true ],
+"method": "set"
+} ]
+}
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 1024, 320 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 124
+font_data = ExtResource( 3 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 568, 568, 400, 400 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 49, 561, 414, 414 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 48
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 144
+font_data = ExtResource( 4 )
+
+[sub_resource type="Gradient" id=11]
+colors = PoolColorArray( 1, 0.784314, 0.145098, 1, 0.352941, 0.772549, 0.309804, 1 )
+
+[sub_resource type="GradientTexture" id=12]
+gradient = SubResource( 11 )
+width = 1248
+
+[node name="field" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+anims/hit = SubResource( 1 )
+anims/miss = SubResource( 2 )
+anims/opponent_intro = SubResource( 3 )
+anims/player_intro = SubResource( 4 )
+
+[node name="tween" type="Tween" parent="."]
+
+[node name="timers" type="Node" parent="."]
+
+[node name="opponent_timer" type="Timer" parent="timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="confetti_timer" type="Timer" parent="timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="congrats_timer" type="Timer" parent="timers"]
+wait_time = 4.0
+one_shot = true
+
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="logo" type="TextureRect" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -520.0
+margin_top = -149.5
+margin_right = 520.0
+margin_bottom = 149.5
+texture = SubResource( 5 )
+expand = true
+
+[node name="pay_close_attention" type="Label" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -545.0
+margin_top = -62.0
+margin_right = 545.0
+margin_bottom = 62.0
+custom_fonts/font = SubResource( 6 )
+text = "Pay Close Attention"
+
+[node name="do_the_same" type="Label" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -355.5
+margin_top = -62.0
+margin_right = 355.5
+margin_bottom = 62.0
+custom_fonts/font = SubResource( 6 )
+text = "Do The Same"
+
+[node name="hit" type="TextureRect" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -200.0
+margin_right = 200.0
+margin_bottom = 200.0
+texture = SubResource( 7 )
+
+[node name="miss" type="TextureRect" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -207.0
+margin_top = -207.0
+margin_right = 207.0
+margin_bottom = 207.0
+texture = SubResource( 8 )
+
+[node name="turn_label" type="Label" parent="ui"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -76.0
+margin_top = 29.0
+margin_right = -18.0
+margin_bottom = 77.0
+custom_fonts/font = SubResource( 9 )
+text = "1"
+align = 1
+
+[node name="congratulations" type="Label" parent="ui"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -530.0
+margin_top = -72.0
+margin_right = 530.0
+margin_bottom = 72.0
+custom_fonts/font = SubResource( 10 )
+text = "congratulations"
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2( 608, 304 )
+current = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="gradient" type="Polygon2D" parent="."]
+position = Vector2( -16, -16 )
+texture = SubResource( 12 )
+polygon = PoolVector2Array( 0, 0, 1248, 0, 1248, 640, 0, 640 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="outline" type="Line2D" parent="."]
+position = Vector2( -32, -16 )
+points = PoolVector2Array( 32, 16, 1248, 16, 1248, 624, 32, 624, 32, 16 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1086324736
+begin_cap_mode = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="split" type="Line2D" parent="."]
+position = Vector2( -32, -16 )
+points = PoolVector2Array( 640, 0, 640, 640 )
+width = 4.0
+default_color = Color( 1, 1, 1, 1 )
+texture_mode = -1086324736
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="grid" type="Polygon2D" parent="."]
+modulate = Color( 1, 1, 1, 0.564706 )
+position = Vector2( -32, -16 )
+texture = ExtResource( 5 )
+texture_offset = Vector2( 16, 0 )
+polygon = PoolVector2Array( 32, 16, 1248, 16, 1248, 624, 32, 624 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" type="Node2D" parent="."]
+position = Vector2( 912, 304 )
+
+[node name="sprite" type="Sprite" parent="player"]
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 32, 32 )
+
+[node name="opponent" type="Node2D" parent="."]
+position = Vector2( 304, 304 )
+
+[node name="sprite" type="Sprite" parent="opponent"]
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 32, 0, 32, 32 )
+
+[node name="confetti" type="Node2D" parent="."]
+[connection signal="tween_completed" from="tween" to="." method="_on_tween_completed"]
+[connection signal="timeout" from="timers/opponent_timer" to="." method="opponent_move"]
+[connection signal="timeout" from="timers/confetti_timer" to="." method="add_confetti"]
+[connection signal="timeout" from="timers/congrats_timer" to="." method="reload"]

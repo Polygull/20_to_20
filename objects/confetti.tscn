@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/confetti.gd" type="Script" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("polygon_2d:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1e-005 ) ]
+}
+
+[node name="confetti" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="polygon_2d" type="Polygon2D" parent="."]
+position = Vector2( 0, -1 )
+polygon = PoolVector2Array( -8, -7, 8, -7, 8, 9, -8, 9 )
+
+[node name="timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+autoplay = "default"
+playback_speed = 0.5
+anims/default = SubResource( 1 )
